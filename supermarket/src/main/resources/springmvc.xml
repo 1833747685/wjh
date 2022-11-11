@@ -16,4 +16,5 @@
         <!--  上传文件大小上限，单位为字节（10485760=10M）  -->
         <property name="maxUploadSize" value="10485760"/>
     </bean>
+
 </beans>
