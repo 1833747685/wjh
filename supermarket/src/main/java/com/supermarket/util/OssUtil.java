@@ -76,9 +76,4 @@ public class OssUtil {
     }
 
 
-    public static void main(String[] args) throws FileNotFoundException {
-        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\Ding\\Pictures\\捕获.jpg");
-        uploadFile(fileInputStream,"捕获.jpg");
-    }
-
 }
