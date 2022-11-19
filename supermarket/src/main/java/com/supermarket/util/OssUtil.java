@@ -1,5 +1,5 @@
 package com.supermarket.util;/*
- *   @Author：Quguanbo
+ *   @Author：DingXiaoNan
  *   @Date：2022/10/11 16:15
  */
 
