@@ -24,7 +24,7 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin",origin);
         // 允许携带Cookie
         response.setHeader("Access-Control-Allow-Credentials","true");
-        //
+
         response.setHeader("Access-Control-Allow-Headers", "Content-Type,content-type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization,Access-Token,token");
         response.setHeader("Access-Control-Expose-Headers", "*");//响应客户端的头部 允许携带Token 等等
         response.setHeader("Access-Control-Max-Age", "3600");   // 预检请求的结果缓存时间

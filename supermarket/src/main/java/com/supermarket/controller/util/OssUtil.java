@@ -1,5 +1,5 @@
-package com.supermarket.util;/*
- *   @Author：DingXiaoNan
+package com.supermarket.controller.util;/*
+ *   @Author：Quguanbo
  *   @Date：2022/10/11 16:15
  */
 
@@ -29,14 +29,14 @@ public class OssUtil {
         // 如果未指定本地路径，则默认从示例程序所属项目对应本地路径中上传文件。
         //String filePath = "C:\Users\Ding\Pictures";
 
-        objectName = objectName+System.currentTimeMillis()+filename.substring(filename.lastIndexOf("."));
+        objectName = objectName + System.currentTimeMillis() + filename.substring(filename.lastIndexOf("."));
 
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         try {
             // 创建PutObjectRequest对象。
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName,objectName, inputStream);
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, inputStream);
             // 如果需要上传时设置存储类型和访问权限，请参考以下示例代码。
             // ObjectMetadata metadata = new ObjectMetadata();
             // metadata.setHeader(OSSHeaders.OSS_STORAGE_CLASS, StorageClass.Standard.toString());
@@ -48,9 +48,9 @@ public class OssUtil {
 
             //得到上传之后的文件地址
             //https://bucketname.endpoint/objectnane
-            String fileUrl = "https://dxn2212.oss-cn-hangzhou.aliyuncs.com/"+objectName;
+            String fileUrl = "https://dxn2212.oss-cn-hangzhou.aliyuncs.com/" + objectName;
 
-            System.out.println("上传之后的文件路径"+ fileUrl);
+            System.out.println("上传之后的文件路径" + fileUrl);
 
             return fileUrl;
 
@@ -71,9 +71,13 @@ public class OssUtil {
                 ossClient.shutdown();
             }
         }
-
         return "上传失败";
     }
 
+
+    public static void main(String[] args) throws FileNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\Ding\\Pictures\\捕获.jpg");
+        uploadFile(fileInputStream, "捕获.jpg");
+    }
 
 }
