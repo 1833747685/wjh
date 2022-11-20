@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supermarket.mapper.SExpandedMapper">
+    <resultMap id="BaseResultMap" type="com.supermarket.pojo.SExpanded">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="pic" jdbcType="VARCHAR" property="pic"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="number" jdbcType="VARCHAR" property="number"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="weight" jdbcType="VARCHAR" property="weight"/>
+        <result column="discount" jdbcType="VARCHAR" property="discount"/>
+        <result column="quantity" jdbcType="VARCHAR" property="quantity"/>
+        <result column="launchdate" jdbcType="TIMESTAMP" property="launchdate"/>
+        <result column="dm" jdbcType="TIMESTAMP" property="dm"/>
+        <result column="qgperiod" jdbcType="VARCHAR" property="qgperiod"/>
+        <result column="lscategory" jdbcType="VARCHAR" property="lscategory"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from s_expanded
+        <where>
+            <if test="lscategory != null and lscategory != '' ">
+                and lscategory like concat('%',#{lscategory},'%')
+            </if>
+            <if test="qgperiod != null and qgperiod != '' ">
+                and qgperiod like concat('%',#{qgperiod},'%')
+            </if>
+            <if test="dm != null and dm != '' ">
+                and dm like concat('%',#{dm},'%')
+            </if>
+            <if test="launchdate != null and launchdate != '' ">
+                and launchdate like concat('%',#{launchdate},'%')
+            </if>
+            <if test="quantity != null and quantity != '' ">
+                and quantity like concat('%',#{quantity},'%')
+            </if>
+            <if test="v != null and discount != '' ">
+                and discount like concat('%',#{discount},'%')
+            </if>
+            <if test="weight != null and weight != '' ">
+                and weight like concat('%',#{weight},'%')
+            </if>
+            <if test="price != null and price != '' ">
+                and price like concat('%',#{price},'%')
+            </if>
+            <if test="number != null and number != '' ">
+                and number like concat('%',#{number},'%')
+            </if>
+            <if test="name != null and name != '' ">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="id != null and id != '' ">
+                and id like concat('%',#{id},'%')
+            </if>
+        </where>
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from s_expanded
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteAll">
+        delete
+        from s_expanded
+        where id IN
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insert" parameterType="com.supermarket.pojo.SExpanded">
+        insert into s_expanded
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="pic != null">
+                pic,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="discount != null">
+                discount,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="launchdate != null">
+                launchdate,
+            </if>
+            <if test="dm != null">
+                dm,
+            </if>
+            <if test="qgperiod != null">
+                qgperiod,
+            </if>
+            <if test="lscategory != null">
+                lscategory,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="pic != null">
+                #{pic,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=VARCHAR},
+            </if>
+            <if test="discount != null">
+                #{discount,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=VARCHAR},
+            </if>
+            <if test="launchdate != null">
+                #{launchdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dm != null">
+                #{dm,jdbcType=TIMESTAMP},
+            </if>
+            <if test="qgperiod != null">
+                #{qgperiod,jdbcType=VARCHAR},
+            </if>
+            <if test="lscategory != null">
+                #{lscategory,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updataSExpanded" parameterType="com.supermarket.pojo.SExpanded">
+        update s_expanded
+        <set>
+            <if test="lscategory != null">
+                lscategory = #{lscategory},
+            </if>
+            <if test="qgperiod != null">
+                qgperiod = #{qgperiod},
+            </if>
+            <if test="dm != null">
+                dm = #{dm},
+            </if>
+            <if test="launchdate != null">
+                launchdate = #{launchdate},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity},
+            </if>
+            <if test="discount != null">
+                discount = #{discount},
+            </if>
+            <if test="weight != null">
+                weight = #{weight},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="pic != null">
+                pic = #{pic},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
