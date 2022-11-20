@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/lib/layui-v2.6.3/css/layui.css" media="all">
+
+    <script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+    <script src="/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+    <script src="/lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="layui-form layuimini-form">
+        <form action="" class="layui-form" lay-filter="coolForm">
+            <input type="text" name="dishes_id" style="display: none;" />
+        <div class="layui-form-item">
+            <label class="layui-form-label required">凉菜名</label>
+            <div class="layui-input-block">
+                <input type="text" name="dishes_name" lay-verify="required" lay-reqtext="菜名不能为空" placeholder="请输入菜名" value=""
+                    class="layui-input">
+                <!-- <tip>填写自己管理账号的名称。</tip> -->
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">存量</label>
+            <div class="layui-input-block">
+            <input type="text" name="dishes_stock" lay-verify="required" lay-reqtext="菜品介绍不能为空" placeholder="请输入菜品介绍" value=""
+                    class="layui-input">
+                </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜品价格</label>
+            <div class="layui-input-block">
+                <input type="text" name="dishes_price"  lay-verify="required" placeholder="菜品价格"
+                     class="layui-input">
+            </div>
+        </div>
+
+
+        <!-- <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">菜品图片</label>
+            <div class="layui-input-block">
+                <input type="text" name="dishes_pic" placeholder="菜品图片" value="" class="layui-input">
+            </div>
+        </div> -->
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">菜品图片</label>
+            <div class="layui-input-block">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="test1">修改图片</button>
+                    <input type="hidden" name="dishes_pic" id="dishes_pic">
+                    <!-- <div class="layui-upload-list">
+                      <img style="width: 100px;" class="layui-upload-img" id="demo1">
+                      <p id="demoText"></p>
+                    </div> -->
+                    <div class="layui-upload-list">
+                        <img style="width:100px;height:100px;" src="" id="demo1" alt="">
+                    </div>
+                    <div style="width: 95px;">
+                      <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="demo">
+                        <div class="layui-progress-bar" lay-percent=""></div>
+                      </div>
+                    </div>
+                  </div>   
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            </div>
+        </div>
+
+    </form>
+    </div>
+    <script>
+        layui.use(['form','upload','element'], function () {
+            var form = layui.form,
+                upload = layui.upload,
+                element = layui.element,
+                layer = layui.layer,
+                laydate = layui.laydate,
+                $ = layui.$;
+
+            // 渲染日期组件
+            laydate.render({
+                elem: '#date'
+            });
+
+         //常规使用 - 普通图片上传
+         var uploadInst = upload.render({
+                elem: '#test1'
+                ,url: 'http://localhost:8080/cool/upload' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+                ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+                
+                element.progress('demo', '0%'); //进度条复位
+                layer.msg('上传中', {icon: 16, time: 0});
+                }
+                ,done: function(res){
+                    if(res.code==20000){
+                        $("#demo1").attr("src",res.data.url);
+                        $("#dishes_pic").val(res.data.url);  // 把上传之后的图片地址 存到隐藏域  表单提交的时候 传到后台
+                        console.log("aaaa = " +  $("dishes_pic").val());
+                    }
+                //如果上传失败
+                if(res.code ==4444){
+                    return layer.msg('上传失败');
+                }
+                //上传成功的一些操作
+                //……
+                $('#demoText').html(''); //置空上传失败的状态
+                }
+                ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+                }
+                //进度条
+                ,progress: function(n, elem, e){
+                element.progress('demo', n + '%'); //可配合 layui 进度条元素使用
+                if(n == 100){
+                    layer.msg('上传完毕', {icon: 1});
+                }
+                }
+            });
+
+
+
+            //从localStorage 把数据取出来  赋值给表单项
+            var jsonStr = localStorage.getItem("filter");
+            var stuObj = JSON.parse(jsonStr);    
+            //给表单项赋值
+            form.val("coolForm",{
+                dishes_id:stuObj.dishes_id,
+                dishes_name:stuObj.dishes_name,
+                dishes_stock:stuObj.dishes_stock,
+                dishes_price:stuObj.dishes_price,
+                dishes_pic:stuObj.dishes_pic,
+            }),$("#demo1").attr("src",stuObj.dishes_pic);
+
+
+
+            //监听提交
+            form.on('submit(saveBtn)', function (data) {
+                var index = layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                }, function () {
+
+                    // 关闭弹出层
+                    layer.close(index);
+
+                    var iframeIndex = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(iframeIndex);
+
+                });
+                
+                $.ajax({
+                    url:"http://localhost:8080/cool/updateCool",
+                    data:data.field,
+                    type:"post",
+                    success:function(result){
+                        if(result.code==20000){
+
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.msg("修改成功");
+                            parent.layer.close(iframeIndex);
+                            
+                        }else{
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.msg("修改失败");
+                            parent.layer.close(iframeIndex);
+                        }    
+                    },
+                    dataType:"json"
+                })
+
+
+                return false;
+            });
+
+            
+
+        });
+    </script>
+
+    
+</body>
+</html>

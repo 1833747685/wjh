@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supermarket.mapper.ToiletriesMapper">
+    <select id="selectByParams" resultType="com.supermarket.pojo.Toiletries">
+        select * from s_toiletries
+        <where>
+            <if test="name!=null and name !=''">and tname like concat('%',#{name},'%')</if>
+            <if test="stock!=null and stock !=''">and tstock like concat('%',#{stock},'%')</if>
+            <if test="price!=null and price !=''">and tprice like concat('%',#{price},'%')</if>
+        </where>
+    </select>
+    <insert id="addToiletries" parameterType="com.supermarket.pojo.Toiletries">
+        insert into s_toiletries values(null,#{tname},#{tbrand},#{tprice},#{tstock},#{tpic})
+    </insert>
+    <update id="updateToiletries" parameterType="com.supermarket.pojo.Toiletries">
+        update s_toiletries
+        <set>
+            <if test="tname !=null">
+                tname = #{tname},
+            </if>
+            <if test="tbrand !=null">
+                tbrand = #{tbrand},
+            </if>
+            <if test="tprice !=null">
+                tprice = #{tprice},
+            </if>
+            <if test="tstock !=null">
+                tstock = #{tstock},
+            </if>
+            <if test="tpic !=null">
+                tpic = #{tpic},
+            </if>
+        </set>
+        where tid = #{tid}
+    </update>
+    <delete id="deleteAllToiletries">
+        delete from s_toiletries where tid in
+        <foreach collection="list" item="tid" open="(" close=")" separator=",">
+            #{tid}
+        </foreach>
+    </delete>
+</mapper>

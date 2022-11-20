@@ -1,5 +1,5 @@
 package com.supermarket.util;/*
- *   @Author：Quguanbo
+ *   @Author：DingXiaoNan
  *   @Date：2022/10/11 16:15
  */
 
@@ -75,10 +75,5 @@ public class OssUtil {
         return "上传失败";
     }
 
-
-    public static void main(String[] args) throws FileNotFoundException {
-        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\Ding\\Pictures\\捕获.jpg");
-        uploadFile(fileInputStream,"捕获.jpg");
-    }
 
 }
